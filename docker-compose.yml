@@ -2,7 +2,7 @@ version: '3.3'
 services:
     mysql-develop:
         build: ./docker/mysql
-        container_name: makigumo_mysql_develop
+        container_name: makigumo_mariadb_develop
         restart: always
         command: --log-bin-trust-function-creators=1
         environment:
