@@ -1,9 +1,9 @@
 use crate::domain::model::user::User;
 use crate::infrastructures::database::schema::*;
+use anyhow::Result;
 use diesel::mysql::MysqlConnection;
 use diesel::prelude::*;
-use dotenv::dotenv;
-use std::env;
+use diesel::QueryDsl;
 
 use crate::domain::repository::user_repository::UserRepository;
 
@@ -32,33 +32,61 @@ impl UserEntity {
 /// Repository impl
 ///
 pub struct UserRepositoryImpl {
-    pub pool: Box<Pool<ConnectionManager<MysqlConnection>>>,
-}
-impl UserRepositoryImpl {
-    pub fn new() -> Self {
-        dotenv().ok();
-
-        let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-        let connection = MysqlConnection::establish(&database_url)
-            .expect(&format!("Error connecting to database: {}", database_url));
-
-        Self { connection }
-    }
+    pub connection: MysqlConnection,
 }
 
 impl UserRepository for UserRepositoryImpl {
-    fn get_user(&self) -> User {
-        unimplemented!();
-        #[allow(unreachable_code)]
-        User::new(1, "".to_owned()).unwrap()
+    fn get_user(&self, user_id: usize) -> Result<User> {
+        use super::super::database::schema::users::dsl;
+
+        let result = dsl::users
+            .find(user_id as u64)
+            .first::<UserEntity>(&self.connection)?;
+
+        // database内のuserは3文字以上が確定しているためunwrap
+        Ok(result.of().unwrap())
     }
-    fn create_user(&self) {
-        unimplemented!()
+
+    fn get_users(&self) -> Result<Vec<User>> {
+        use super::super::database::schema::users::dsl;
+
+        let results = dsl::users.load::<UserEntity>(&self.connection)?;
+
+        let users = results
+            .into_iter()
+            .map(|user| user.of().unwrap())
+            .collect::<Vec<User>>();
+        Ok(users)
     }
-    fn update_user(&self) {
-        unimplemented!()
+
+    fn create_user(&self, user: &User) -> Result<User> {
+        let user_entity = UserEntity::from(user);
+
+        diesel::insert_into(users::table)
+            .values(user_entity)
+            .execute(&self.connection)?;
+
+        self.get_user(user.id)
     }
-    fn delete_user(&self) {
-        unimplemented!()
+
+    fn update_user(&self, user: &User) -> Result<User> {
+        use super::super::database::schema::users::dsl;
+
+        let user_entity = UserEntity::from(user);
+
+        diesel::update(dsl::users.find(user_entity.id))
+            .set((dsl::id.eq(user_entity.id), dsl::name.eq(user_entity.name)))
+            .execute(&self.connection)?;
+
+        self.get_user(user.id)
+    }
+
+    fn delete_user(&self, user: &User) -> Result<()> {
+        use super::super::database::schema::users::dsl;
+
+        let user_entity = UserEntity::from(user);
+
+        let _ = diesel::delete(dsl::users.find(user_entity.id)).execute(&self.connection)?;
+        Ok(())
     }
 }
