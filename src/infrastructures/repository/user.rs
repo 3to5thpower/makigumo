@@ -16,6 +16,7 @@ pub struct UserEntity {
     pub id: u64,
     pub name: String,
 }
+
 impl UserEntity {
     fn from(model: &User) -> Self {
         Self {
@@ -36,8 +37,6 @@ pub struct UserRepositoryImpl {
 }
 
 impl UserRepository for UserRepositoryImpl {
-    //! DBから指定されたidのユーザを取得する。
-    //! ユーザが存在しなければErr(NotFound)が返る。
     fn get_user(&self, user_id: usize) -> Result<User> {
         use super::super::database::schema::users::dsl;
 
