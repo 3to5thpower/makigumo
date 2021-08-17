@@ -1,4 +1,4 @@
-# Makigumo
+# makigumo
 Rust-DDD practice repository
 
 ## Setup
