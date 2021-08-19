@@ -1,4 +1,5 @@
-use anyhow::{bail, Result};
+use crate::domain::error::UserModelError;
+use anyhow::{ensure, Result};
 
 #[derive(Debug)]
 pub struct User {
@@ -8,13 +9,14 @@ pub struct User {
 
 impl User {
     pub fn new(id: String, name: String) -> Result<Self> {
-        if name.len() < 3 || 100 <= name.len() {
-            bail!("ユーザ名は3文字以上100文字未満である必要があります")
-        }
-
-        if id.len() < 3 || 100 <= id.len() {
-            bail!("ユーザIDは3文字以上100文字未満である必要があります")
-        }
+        ensure!(
+            id.len() < 3 || 100 <= id.len(),
+            UserModelError::UserIdLengthError(id)
+        );
+        ensure!(
+            name.len() < 3 || 100 <= name.len(),
+            UserModelError::UserNameLengthError(name)
+        );
 
         Ok(Self { id, name })
     }
@@ -27,20 +29,5 @@ impl User {
 impl PartialEq for User {
     fn eq(&self, other: &User) -> bool {
         self.id == other.id
-    }
-}
-
-#[derive(Debug)]
-pub struct NewUser {
-    pub name: String,
-}
-
-impl NewUser {
-    pub fn new(name: String) -> Result<Self> {
-        if name.len() < 3 {
-            bail!("ユーザ名は3文字以上である必要があります")
-        } else {
-            Ok(Self { name })
-        }
     }
 }

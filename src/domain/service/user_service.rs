@@ -6,7 +6,7 @@ pub struct UserService<Repository: UserRepository> {
 }
 
 impl<Repository: UserRepository> UserService<Repository> {
-    pub fn exists(&self, user: User) -> bool {
+    pub fn exists(&self, user: &User) -> bool {
         match self.repository.get_user(&user.id) {
             Ok(_) => true,
             Err(e) => {
