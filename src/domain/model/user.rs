@@ -2,17 +2,21 @@ use anyhow::{bail, Result};
 
 #[derive(Debug)]
 pub struct User {
-    pub id: usize,
+    pub id: String,
     pub name: String,
 }
 
 impl User {
-    pub fn new(id: usize, name: String) -> Result<Self> {
-        if name.len() < 3 {
-            bail!("ユーザ名は3文字以上である必要があります")
-        } else {
-            Ok(Self { id, name })
+    pub fn new(id: String, name: String) -> Result<Self> {
+        if name.len() < 3 || 100 <= name.len() {
+            bail!("ユーザ名は3文字以上100文字未満である必要があります")
         }
+
+        if id.len() < 3 || 100 <= id.len() {
+            bail!("ユーザIDは3文字以上100文字未満である必要があります")
+        }
+
+        Ok(Self { id, name })
     }
 
     pub fn change_user_name(&mut self, name: String) {

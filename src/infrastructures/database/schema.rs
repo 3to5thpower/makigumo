@@ -1,6 +1,6 @@
 table! {
     users (id) {
-        id -> Unsigned<Bigint>,
+        id -> Varchar,
         name -> Varchar,
     }
 }

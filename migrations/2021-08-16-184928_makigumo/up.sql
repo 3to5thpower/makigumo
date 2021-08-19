@@ -1,8 +1,8 @@
 -- Your SQL goes here
 CREATE TABLE users (
-    id SERIAL PRIMARY KEY, 
-    name VARCHAR(64) NOT NULL
+    id VARCHAR(100) PRIMARY KEY NOT NULL, 
+    name VARCHAR(100) NOT NULL
 );
 
-INSERT INTO users (name) VALUES ('admin'), ('user1'), ('user2');
+INSERT INTO users (id, name) VALUES ('admin', 'admin'), ('test1@example.jp', 'user1'), ('test2@example.jp','user2');
 

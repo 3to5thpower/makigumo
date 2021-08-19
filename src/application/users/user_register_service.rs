@@ -8,7 +8,7 @@ pub struct UserRegisterService<Repository: UserRepository> {
 }
 
 impl<Repository: UserRepository> UserRegisterService<Repository> {
-    pub fn register(&self, user_name: &str) {
-        let user = User::new(user_name);
+    pub fn register(&self, user_id: &str, user_name: &str) {
+        let user = User::new(user_id.to_owned(), user_name.to_owned());
     }
 }
