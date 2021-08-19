@@ -10,11 +10,11 @@ pub struct User {
 impl User {
     pub fn new(id: String, name: String) -> Result<Self> {
         ensure!(
-            id.len() < 3 || 100 <= id.len(),
+            3 <= id.len() && id.len() < 100,
             UserModelError::UserIdLengthError(id)
         );
         ensure!(
-            name.len() < 3 || 100 <= name.len(),
+            3 <= name.len() && name.len() < 100,
             UserModelError::UserNameLengthError(name)
         );
 

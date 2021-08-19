@@ -14,7 +14,7 @@ impl<Repository: UserRepository> UserRegisterService<Repository> {
         let user = User::new(user_id.to_owned(), user_name.to_owned())?;
 
         ensure!(
-            self.user_service.exists(&user),
+            !self.user_service.exists(&user),
             UserError::UserAlreadyExistsError(user.id)
         );
 
