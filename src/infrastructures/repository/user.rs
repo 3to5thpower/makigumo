@@ -1,4 +1,4 @@
-use crate::domain::model::user::User;
+use crate::domain::model::user::{NewUser, User};
 use crate::infrastructures::database::schema::*;
 use anyhow::Result;
 use diesel::mysql::MysqlConnection;
@@ -10,7 +10,7 @@ use crate::domain::repository::user_repository::UserRepository;
 ///
 /// Entity
 ///
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Queryable, Insertable)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Queryable)]
 #[table_name = "users"]
 pub struct UserEntity {
     pub id: u64,
@@ -24,8 +24,22 @@ impl UserEntity {
             name: model.name.clone(),
         }
     }
-    fn of(&self) -> Result<User, String> {
+    fn of(&self) -> Result<User> {
         User::new(self.id as usize, self.name.clone())
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Insertable)]
+#[table_name = "users"]
+pub struct NewUserEntity {
+    pub name: String,
+}
+
+impl NewUserEntity {
+    fn from(model: &NewUser) -> Self {
+        Self {
+            name: model.name.clone(),
+        }
     }
 }
 
@@ -60,8 +74,8 @@ impl UserRepository for UserRepositoryImpl {
         Ok(users)
     }
 
-    fn create_user(&self, user: &User) -> Result<User> {
-        let user_entity = UserEntity::from(user);
+    fn create_user(&self, user: &NewUser) -> Result<User> {
+        let user_entity = NewUserEntity::from(user);
 
         diesel::insert_into(users::table)
             .values(user_entity)

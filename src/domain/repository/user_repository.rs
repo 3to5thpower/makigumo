@@ -1,4 +1,4 @@
-use crate::domain::model::user::User;
+use crate::domain::model::user::{NewUser, User};
 use anyhow::Result;
 
 pub trait UserRepository {
@@ -10,8 +10,7 @@ pub trait UserRepository {
     fn get_users(&self) -> Result<Vec<User>>;
 
     /// ユーザを新しく作成する。
-    /// 作成に成功すればそのユーザのエントリを返す
-    fn create_user(&self, user: &User) -> Result<User>;
+    fn create_user(&self, user: &NewUser) -> Result<()>;
 
     /// ユーザ情報を更新する。
     /// 更新に成功すればそのユーザのエントリを返す。

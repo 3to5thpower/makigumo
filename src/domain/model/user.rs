@@ -1,3 +1,5 @@
+use anyhow::{bail, Result};
+
 #[derive(Debug)]
 pub struct User {
     pub id: usize,
@@ -5,9 +7,9 @@ pub struct User {
 }
 
 impl User {
-    pub fn new(id: usize, name: String) -> Result<Self, String> {
+    pub fn new(id: usize, name: String) -> Result<Self> {
         if name.len() < 3 {
-            Err(String::from("ユーザ名は3文字以上である必要があります"))
+            bail!("ユーザ名は3文字以上である必要があります")
         } else {
             Ok(Self { id, name })
         }
@@ -21,5 +23,20 @@ impl User {
 impl PartialEq for User {
     fn eq(&self, other: &User) -> bool {
         self.id == other.id
+    }
+}
+
+#[derive(Debug)]
+pub struct NewUser {
+    pub name: String,
+}
+
+impl NewUser {
+    pub fn new(name: String) -> Result<Self> {
+        if name.len() < 3 {
+            bail!("ユーザ名は3文字以上である必要があります")
+        } else {
+            Ok(Self { name })
+        }
     }
 }
