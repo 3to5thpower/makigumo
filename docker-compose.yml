@@ -1,6 +1,6 @@
 version: '3.3'
 services:
-    mysql-develop:
+    mariadb-develop:
         build: ./docker/mysql
         container_name: makigumo_mariadb_develop
         restart: always
