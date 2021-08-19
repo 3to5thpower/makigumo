@@ -10,3 +10,4 @@ diesel = {version = "1.4.7", features = ["mysql"]}
 dotenv = "0.15.0"
 anyhow = "1.0"
 matches = "0.1.9"
+thiserror = "1.0.26"
