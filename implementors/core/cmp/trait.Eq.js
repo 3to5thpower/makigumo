@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["makigumo"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.54.0/core/cmp/trait.Eq.html\" title=\"trait core::cmp::Eq\">Eq</a> for <a class=\"struct\" href=\"makigumo/infrastructures/repository/user/struct.UserEntity.html\" title=\"struct makigumo::infrastructures::repository::user::UserEntity\">UserEntity</a>","synthetic":false,"types":["makigumo::infrastructures::repository::user::UserEntity"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

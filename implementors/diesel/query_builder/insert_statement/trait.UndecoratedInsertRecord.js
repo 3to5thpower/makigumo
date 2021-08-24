@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["makigumo"] = [{"text":"impl&lt;'insert&gt; UndecoratedInsertRecord&lt;<a class=\"struct\" href=\"makigumo/infrastructures/database/schema/users/struct.table.html\" title=\"struct makigumo::infrastructures::database::schema::users::table\">table</a>&gt; for <a class=\"struct\" href=\"makigumo/infrastructures/repository/user/struct.UserEntity.html\" title=\"struct makigumo::infrastructures::repository::user::UserEntity\">UserEntity</a>","synthetic":false,"types":["makigumo::infrastructures::repository::user::UserEntity"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
