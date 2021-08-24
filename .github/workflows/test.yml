@@ -1,4 +1,4 @@
-name: Run test
+name: test
 
 on:
   pull_request:
@@ -9,7 +9,8 @@ env:
 
 jobs:
   test:
-    name: run test
+    # using sccache 
+    name: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -20,10 +21,7 @@ jobs:
             ~/.cargo/git
             target          
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - uses: actions-rs/toolchain@v1
+      - uses: visvirial/sccache-action@v1
         with:
-          toolchain: stable
-      - uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --release --all-features
+          cache-key: ${{ runner.os }}-sccache-${{ hashFiles('**/Cargo.lock') }}
+      - run: cargo test --verbose
